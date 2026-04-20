@@ -45,15 +45,30 @@ plt.tight_layout()
 plt.savefig('viz1b_deserts.png', dpi=300)
 plt.close()
 
-# --- VIZ 2A ---
-growth_states = df[df[col_change] > 0][['U.S. State', col_change]].sort_values(col_change, ascending=False).head(20)
+# Clean columns
+col_women_without = '% of women aged 15-44 living in a county without a clinic, 2020'
+df[col_women_without] = pd.to_numeric(df[col_women_without].astype(str).str.replace('unavailable', 'NaN', regex=False), errors='coerce')
+
+# Calculate the deceptive inverse: % of women WITH a clinic
+df['% of women WITH a clinic'] = 100 - df[col_women_without]
+
+# --- NEW VIZ 2A ---
+# Select top 15 states to make a reassuring, dense bar chart
+top_access = df[['U.S. State', '% of women WITH a clinic']].dropna().sort_values('% of women WITH a clinic', ascending=False).head(15)
+
 plt.figure(figsize=(12, 6))
-plt.bar(growth_states['U.S. State'], growth_states[col_change], color='teal')
-plt.title('Growing Access: States with Increasing Abortion Rates (2017-2020)', fontsize=14, fontweight='bold', color='teal')
-plt.ylabel('% Increase in Abortion Rate', fontsize=12)
+plt.bar(top_access['U.S. State'], top_access['% of women WITH a clinic'], color='teal')
+plt.title('Widespread Local Access: % of Women Living in a County with a Clinic (2020)', fontsize=14, fontweight='bold', color='teal')
+plt.ylabel('% of Women (Ages 15-44)', fontsize=12)
+plt.ylim(0, 110) # Gives a reassuring ceiling
+
+# Add text labels for emphasis
+for i, v in enumerate(top_access['% of women WITH a clinic']):
+    plt.text(i, v + 2, f"{int(v)}%", color='darkslategray', ha='center', fontweight='bold')
+
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
-plt.savefig('viz2a_growth.png', dpi=300)
+plt.savefig('viz2a_local_access.png', dpi=300)
 plt.close()
 
 # --- VIZ 2B ---
