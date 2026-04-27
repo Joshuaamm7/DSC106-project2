@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Project 2 Report</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+        <style>
+            :root {
+                --color-neutral-95: hsl(220 10% 95%);
+                --color-neutral-90: hsl(220 10% 90%);
+                --color-neutral-80: hsl(220 10% 80%);
+                --color-neutral-70: hsl(220 10% 70%);
+                --color-neutral-60: hsl(220 10% 60%);
+                --color-neutral-50: hsl(220 10% 50%);
+                --color-neutral-40: hsl(220 10% 40%);
+                --color-neutral-30: hsl(220 10% 30%);
+                --color-neutral-20: hsl(220 10% 20%);
+                --color-neutral-10: hsl(220 10% 10%);
+            }
+
+            html {
+                font: 100%/1.5 system-ui;
+                counter-reset: figure;
+                background: var(--color-neutral-95);
+                max-width: min(75vw, 80em);
+                margin: 0 auto;
+            }
+
+            h1,h2,h3,h4,h5,h6 { line-height:1.1; font-weight:600; text-wrap:balance; }
+            h1,h2 { border-bottom:1px solid var(--color-neutral-80); padding-bottom:0.2em; }
+
+            h1 {
+                margin-block:1em 0.5rem;
+                font-size:clamp(2.5em,150% + 2vh + 2vw,10vmin);
+                font-weight:800;
+            }
+            h1 small {
+                display:block; width:fit-content; padding:0.2em 0.5em;
+                margin-inline:auto; color:white; background:var(--color-neutral-40);
+                font-size:40%; text-transform:uppercase; white-space:nowrap;
+            }
+
+            h2 { font-size:180%; color:var(--color-neutral-30); }
+            h3 { font-size:130%; }
+
+            ul,ol { padding-inline-start:2em; }
+            li+li { margin-top:0.2em; }
+
+            header { padding-block:1em; text-align:center; }
+
+            main {
+                background:white; color:var(--color-neutral-20);
+                border-radius:1rem; padding:0.1rem 2rem;
+            }
+
+            figure {
+                margin:1em 0; padding:0.5rem; margin-inline:-0.5em;
+                border:1px solid var(--color-neutral-80);
+                box-shadow:0 0.1em 0.2em var(--color-neutral-95);
+                text-align:center; background:white;
+            }
+            figure>figcaption {
+                font:500 75% system-ui; background:var(--color-neutral-95);
+                padding:0.5rem; margin:-0.5rem; margin-top:0.5rem;
+                counter-increment:figure; text-align:left;
+            }
+            figure>figcaption::before {
+                content:"Figure " counter(figure) ": ";
+                font-weight:bold; color:var(--color-neutral-40);
+            }
+
+            .chart-box { position:relative; width:100%; padding:12px 0; }
+            .chart-box canvas { display:block; }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>
+                <small>Project 2</small>
+                Persuasive or Deceptive Visualization?
+            </h1>
+            <p><strong>Joshua Huang, Ethan Choi, Matthew Lee</strong> — <em>joh095@ucsd.edu, eac002@ucsd.edu, mal060@ucsd.edu</em></p>
+        </header>
+
+        <main>
+            <h2>Proposition: "Abortion access has effectively collapsed in a significant portion of the United States, leaving millions of women without meaningful care in their home state."</h2>
+
+            <!-- FOR -->
+            <section>
+                <h3>FOR the Proposition</h3>
+
+                <figure>
+                    <div class="chart-box" style="height:420px;"><canvas id="c1"></canvas></div>
+                    <figcaption>Out-of-State Travel for Abortion Services — % of residents who traveled out of state to obtain abortion care (2020), showing the 12 states with the highest travel rates. Missouri had a single remaining clinic in 2020; 99% of its residents seeking abortions had to leave the state.</figcaption>
+                </figure>
+
+                <p>Design Decisions and Rationale:</p>
+                <ul>
+                    <li><strong>Cherry-picked state selection.</strong> Only the 12 states with the highest out-of-state travel rates are shown, omitting the majority of states where travel rates are low or near 0%. This makes extreme outliers appear to be the national norm. There is no visual cue that these are the worst-case states — the chart simply stops, implying the cutoff is arbitrary rather than deliberate. We considered showing all 50 states but found the persuasive impact far weaker.</li>
+                    <li><strong>Sequential red colormap anchored to Missouri.</strong> Bars are shaded from deep crimson (Missouri, 99%) to light salmon (Indiana, 31%), encoding urgency through color intensity rather than data. The gradient is purely affective — every bar could be one neutral color — but the darkest reds prime the reader toward alarm before they read a single number. This was effective at directing attention to Missouri as an extreme anchor.</li>
+                    <li><strong>Missouri as a psychological anchor.</strong> Placing Missouri (99%) at the top of a descending sort makes all subsequent bars read as smaller variations on an extreme baseline. Alabama at 47% appears moderate next to 99%, but 47% of residents leaving their state for care is independently alarming. We deliberately omitted any contextualizing note about Missouri's unique legislative situation, which would have reduced the anchoring effect.</li>
+                    <li><strong>Horizontal bar layout with percentage labels on bars.</strong> The horizontal format is the clearest choice for this many labeled categories. Printing exact percentages on each bar removes ambiguity and builds reader trust, making the other deceptive choices less conspicuous. The earnest structural form increases overall persuasiveness by grounding the chart in a familiar, credible appearance.</li>
+                    <li><strong>Title framing: "Out-of-State Travel for Abortion Services."</strong> The title is factually accurate but provides no indication that these are the 12 worst-performing states. A reader may interpret this as a representative cross-section. We considered adding a subtitle clarifying the selection criteria but chose not to, as transparency would undermine the rhetorical effect.</li>
+                </ul>
+            </section>
+
+            <!-- AGAINST -->
+            <section>
+                <h3>AGAINST the Proposition</h3>
+
+                <figure>
+                    <div class="chart-box" style="height:340px;"><canvas id="c2"></canvas></div>
+                    <figcaption>Widespread Local Access: % of Women Living in a County with a Clinic (2020) — showing the 15 states where the largest share of women aged 15–44 live in a county with at least one known abortion provider. DC and Connecticut show 100% coverage; even the lowest state shown (Florida) is at 75%.</figcaption>
+                </figure>
+
+                <p>Design Decisions and Rationale:</p>
+                <ul>
+                    <li><strong>Selective inclusion of high-access states only.</strong> Only the 15 highest-access states are shown, omitting roughly 20 states where fewer than 50% of women live near a clinic. Showing the full distribution would directly undercut the reassuring narrative. These high-access states also happen to be the most populous (CA, NY, FL), lending them implicit but misleading national weight — a reader could reasonably conclude this pattern is representative of the country.</li>
+                    <li><strong>Population-based metric (% of women, not counties).</strong> This chart uses women aged 15–44 as the denominator — a more meaningful and honest measure of actual access than counties. Its earnestness is also strategically useful: the more credible denominator makes the selective state inclusion less noticeable and lends the chart overall trustworthiness, making other choices harder to scrutinize.</li>
+                    <li><strong>Teal palette evoking calm and stability.</strong> Teal reads as institutional, calm, and healthcare-adjacent — a deliberate contrast to the alarm-red of the FOR visualization. The same data encoded in red would read very differently. Affective encoding through color is not neutral, and we used it to create a reassuring reading experience independent of what the numbers actually say.</li>
+                    <li><strong>Y-axis starts at 0 (full scale).</strong> The y-axis runs 0–100%, the honest convention. Because the values are all high (75–100%), an honest full scale still produces tall, reassuring bars without truncation. The full axis earns credibility while the selective state inclusion does the actual persuasive work.</li>
+                    <li><strong>Percentage labels printed on bars.</strong> Exact values on each bar give readers precise information and build credibility. This genuinely earnest choice makes the chart harder to misread and lends it a more honest appearance, which makes the selective state inclusion easier to overlook.</li>
+                </ul>
+            </section>
+
+            <!-- REFLECTION -->
+            <section>
+                <h2>Final Reflection</h2>
+                <p>The most straightforward part of this assignment was identifying which deceptive techniques to use — truncated axes, cherry-picked states, loaded language in titles. These are well-documented and easy to implement. What surprised us was how invisible many of them became once embedded in an otherwise clean, conventionally formatted chart. The truncated y-axis technique, for example, passes a casual reading without friction because the rest of the chart is ordinary. This taught us that deceptive techniques do not stand alone — they depend on the credibility built by surrounding earnest choices (clean layout, labeled axes, cited sources) to avoid detection. The most persuasive visualizations in this assignment were the ones where honest and dishonest choices were deliberately mixed. A fully deceptive chart is easy to distrust; a mostly honest chart with one hidden manipulation is not.</p>
+                <p>Designing the AGAINST visualization was harder than the FOR side. Because the proposition is directionally supported by the data — abortion access really is more restricted in some states — arguing against it required more aggressive filtering. We had to limit ourselves to states where the data genuinely looked good, then frame those states as if they were nationally representative. This asymmetry was revealing: the deceptive techniques needed to argue against a data-supported claim are structurally more aggressive than those needed to argue for it. The FOR side could be built from real patterns in the data; the AGAINST side required those patterns to be hidden through selective omission and a more favorable unit of measurement.</p>
+                <p>This process changed how we define ethical visualization. We no longer think of it as a binary distinction between honest and deceptive charts — every design choice involves some framing, selection, and emphasis. Ethical analysis means being transparent about those choices: documenting what was included, what was excluded, why a particular metric was chosen over alternatives, and what the chart cannot show. The boundary between acceptable persuasion and misleading visualization, in our view, comes down to disclosure. Choosing to show only high-access states is persuasive but defensible if labeled "selected states." Presenting the same chart without that caveat crosses into deception because it allows readers to draw a broader conclusion than the data supports, without any signal that they should be cautious. Deception in visualization is not primarily about what is shown — it is about what the reader is permitted to assume.</p>
+            </section>
+        </main>
+
+        <script>
+        // FOR: Out-of-state travel, horizontal bar
+        new Chart(document.getElementById('c1'), {
+            type: 'bar',
+            data: {
+                labels: ['Missouri','Wyoming','South Dakota','South Carolina','West Virginia','Alabama','District of Columbia','Mississippi','Delaware','Kentucky','Arkansas','Indiana'],
+                datasets: [{
+                    label: '% traveling out of state',
+                    data: [99,88,84,57,52,47,45,44,44,39,37,31],
+                    backgroundColor: ['#7b0000','#8b1a1a','#9b2020','#c04040','#c94848','#d05050','#d85858','#de6060','#e46868','#e87878','#ef9090','#f4aaaa'],
+                    borderWidth: 0, borderRadius: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } }
+                },
+                scales: {
+                    x: { min:0, max:100, ticks:{ callback: v => v+'%' }, title:{ display:true, text:'% of Residents Traveling Out of State (2020)' } },
+                    y: { grid:{ display:false } }
+                }
+            }
+        });
+
+        // AGAINST: Women with local access, vertical bar
+        new Chart(document.getElementById('c2'), {
+            type: 'bar',
+            data: {
+                labels: ['Connecticut','D.C.','California','Hawaii','New York','Nevada','Washington','Massachusetts','Maine','Arizona','Delaware','New Jersey','Oregon','Maryland','Florida'],
+                datasets: [{
+                    label: '% of women in a county with a clinic',
+                    data: [100,100,97,95,94,91,91,86,84,82,81,79,78,77,75],
+                    backgroundColor: '#1a7a6a', borderWidth: 0, borderRadius: 2
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } }
+                },
+                scales: {
+                    y: { min:0, max:100, ticks:{ callback: v => v+'%' }, title:{ display:true, text:'% of Women (Ages 15–44) in a County with a Clinic' } },
+                    x: { ticks:{ maxRotation:45, font:{ size:10 } }, grid:{ display:false } }
+                }
+            }
+        });
+        </script>
+    </body>
+</html>
